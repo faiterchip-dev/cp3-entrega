@@ -1,3 +1,47 @@
+/* =========================================================
+   Felipe Gomes — site pessoal
+   Todo o JavaScript do site em um único arquivo.
+   Seções: 1) menu ativo  2) formulário de contato  3) gráfico
+   ========================================================= */
+(function () {
+  'use strict';
+
+/* ---------- 1) Menu: marca a página atual ---------- */
+// Marca o item de menu correspondente à página atual
+document.addEventListener('DOMContentLoaded', function () {
+  var current = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.main-nav a').forEach(function (link) {
+    var href = link.getAttribute('href');
+    if (href === current) {
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+});
+
+/* ---------- 2) Formulário de contato ---------- */
+// Envio simulado do formulário de contato (sem backend nesta demonstração)
+document.addEventListener('DOMContentLoaded', function () {
+  var form = document.getElementById('contact-form');
+  var status = document.getElementById('form-status');
+  if (!form) return;
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    var nome = document.getElementById('nome').value.trim();
+    status.textContent = 'Obrigado, ' + nome + '! Sua mensagem foi registrada nesta demonstração — em um site real, ela seria enviada por e-mail ou salva em um servidor.';
+    status.classList.add('visible');
+    form.reset();
+    status.focus();
+  });
+});
+
+/* ---------- 3) Gráfico de barras em canvas ---------- */
 // Desenha, em <canvas>, um gráfico de barras simples com horas semanais
 // dedicadas a cada área de estudo/interesse técnico.
 // CP2: o gráfico se adapta à largura disponível e é redesenhado quando a
@@ -97,3 +141,5 @@ document.addEventListener('DOMContentLoaded', function () {
     timer = setTimeout(draw, 120);
   });
 });
+
+})();
