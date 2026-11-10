@@ -223,7 +223,6 @@ main {
   margin: 1.4rem 0;
 }
 
-.form-card { max-width: 640px; }
 
 /* ---------- Identidade (index) — Flexbox ---------- */
 .identity-row {
@@ -658,4 +657,81 @@ textarea.is-invalid {
 .form-status.error {
   border-color: var(--danger);
   color: var(--danger);
+}
+
+/* ---------- Formulário + histórico (Grid) ---------- */
+[hidden] { display: none !important; }
+
+/* Mobile: uma coluna. Desktop: formulário à esquerda, histórico à direita */
+.form-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.4rem;
+  margin: 1.4rem 0;
+  align-items: start;
+}
+
+.message-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.message-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  background: var(--paper-warm);
+}
+
+.message-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.2rem 0.8rem;
+}
+
+.message-meta {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.message-text {
+  margin: 0.5rem 0 0.7rem;
+  word-wrap: break-word;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-deep);
+  border: 1px solid var(--line-strong);
+}
+
+.btn-secondary:hover {
+  background: var(--paper-warm);
+  color: var(--accent-deep);
+}
+
+.btn-small {
+  display: inline-block;
+  width: auto;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .form-layout {
+    gap: 1.4rem;
+    margin: 1.8rem 0;
+  }
+}
+
+@media (min-width: 960px) {
+  .form-layout {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 1.8rem;
+  }
 }

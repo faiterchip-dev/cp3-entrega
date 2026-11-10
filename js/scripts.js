@@ -145,6 +145,84 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* ----- Histórico de mensagens (localStorage) ----- */
+  var CHAVE_MENSAGENS = 'fg_mensagens';
+  var MAX_MENSAGENS = 20;
+  var lista = document.getElementById('lista-mensagens');
+  var vazio = document.getElementById('sem-mensagens');
+  var botaoLimpar = document.getElementById('limpar-mensagens');
+
+  function lerMensagens() {
+    var salvas = lerStorage(CHAVE_MENSAGENS, []);
+    return Array.isArray(salvas) ? salvas : [];
+  }
+
+  function salvarMensagem(dados) {
+    var mensagens = lerMensagens();
+    mensagens.push(dados);
+    if (mensagens.length > MAX_MENSAGENS) {
+      mensagens = mensagens.slice(mensagens.length - MAX_MENSAGENS);
+    }
+    return salvarStorage(CHAVE_MENSAGENS, mensagens);
+  }
+
+  function renderizarMensagens() {
+    var mensagens = lerMensagens();
+    lista.textContent = '';
+    vazio.hidden = mensagens.length > 0;
+    botaoLimpar.hidden = mensagens.length === 0;
+
+    // Mais recentes primeiro. Tudo entra via textContent (nada de innerHTML).
+    mensagens.slice().reverse().forEach(function (m) {
+      var item = document.createElement('li');
+      item.className = 'message-item';
+
+      var cabecalho = document.createElement('div');
+      cabecalho.className = 'message-head';
+      var autor = document.createElement('strong');
+      autor.textContent = m.nome;
+      var meta = document.createElement('span');
+      meta.className = 'message-meta';
+      meta.textContent = m.assunto + ' · ' + new Date(m.data).toLocaleString('pt-BR');
+      cabecalho.appendChild(autor);
+      cabecalho.appendChild(meta);
+
+      var texto = document.createElement('p');
+      texto.className = 'message-text';
+      texto.textContent = m.mensagem;
+
+      var remover = document.createElement('button');
+      remover.type = 'button';
+      remover.className = 'btn btn-secondary btn-small';
+      remover.textContent = 'Remover';
+      remover.setAttribute('data-id', String(m.id));
+      remover.setAttribute('aria-label', 'Remover mensagem de ' + m.nome);
+
+      item.appendChild(cabecalho);
+      item.appendChild(texto);
+      item.appendChild(remover);
+      lista.appendChild(item);
+    });
+  }
+
+  lista.addEventListener('click', function (evento) {
+    var id = evento.target.getAttribute('data-id');
+    if (id === null) return;
+    var restantes = lerMensagens().filter(function (m) { return String(m.id) !== id; });
+    salvarStorage(CHAVE_MENSAGENS, restantes);
+    renderizarMensagens();
+    mostrarStatus('success', 'Mensagem removida do histórico deste navegador.');
+  });
+
+  botaoLimpar.addEventListener('click', function () {
+    if (window.confirm('Apagar todas as mensagens salvas neste navegador?')) {
+      salvarStorage(CHAVE_MENSAGENS, []);
+      renderizarMensagens();
+      mostrarStatus('success', 'Histórico apagado.');
+    }
+  });
+
+  renderizarMensagens();
 
   form.addEventListener('submit', function (evento) {
     evento.preventDefault();
@@ -161,6 +239,19 @@ document.addEventListener('DOMContentLoaded', function () {
     var nome = document.getElementById('nome').value.trim();
     var texto = 'Obrigado, ' + nome + '! Sua mensagem foi validada. Como o site não tem servidor, ela não é enviada a ninguém.';
 
+    var assunto = document.getElementById('assunto');
+    var salvou = salvarMensagem({
+      id: Date.now(),
+      nome: nome,
+      email: document.getElementById('email').value.trim(),
+      assunto: assunto.options[assunto.selectedIndex].text,
+      mensagem: document.getElementById('mensagem').value.trim(),
+      data: new Date().toISOString()
+    });
+    texto = salvou
+      ? 'Obrigado, ' + nome + '! Sua mensagem foi salva neste navegador — veja o histórico nesta página.'
+      : 'Obrigado, ' + nome + '! A mensagem é válida, mas não foi possível salvá-la neste navegador.';
+    renderizarMensagens();
 
     form.reset();
     campos.forEach(function (id) { mostrarErro(id, ''); });

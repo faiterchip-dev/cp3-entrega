@@ -33,7 +33,8 @@
       <p class="lead">Preencha o formulário abaixo para colaborações ou apenas para dizer olá.</p>
     </section>
 
-    <section class="card-solo form-card">
+    <div class="form-layout">
+    <section class="card">
       <form id="contact-form" novalidate>
         <fieldset>
           <legend>Seus dados</legend>
@@ -105,6 +106,18 @@
         <p id="form-status" class="form-status" role="status" tabindex="-1"></p>
       </form>
     </section>
+
+    <section class="card" aria-labelledby="titulo-historico">
+      <h2 id="titulo-historico">Mensagens neste navegador</h2>
+      <p class="media-caption">
+        As mensagens enviadas ficam salvas só aqui, no localStorage do seu navegador, e continuam
+        depois de fechar ou recarregar a página.
+      </p>
+      <p id="sem-mensagens" class="media-caption">Nenhuma mensagem enviada ainda.</p>
+      <ul id="lista-mensagens" class="message-list"></ul>
+      <button type="button" id="limpar-mensagens" class="btn btn-secondary btn-small" hidden>Apagar todas</button>
+    </section>
+    </div>
   </main>
 
   <footer class="site-footer">
