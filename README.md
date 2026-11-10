@@ -2,7 +2,7 @@
 
 Site pessoal / portfólio feito para o projeto individual (HTML, CSS e JavaScript puros, sem frameworks).
 
-- **Site publicado:** https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/
+- **Site publicado:** https://faiterchip-dev.github.io/cp3-entrega/
 - **Repositório:** https://github.com/faiterchip-dev/cp3-entrega
 
 ## Páginas
