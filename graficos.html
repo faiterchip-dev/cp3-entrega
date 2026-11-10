@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Felipe Gomes — Gráficos</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="index.html">Felipe<span>Gomes</span></a>
+      <nav class="main-nav" aria-label="Menu principal">
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="curriculo.html">Currículo</a></li>
+          <li><a href="formulario.html">Contato</a></li>
+          <li><a href="multimidia.html">Multimídia</a></li>
+          <li><a href="graficos.html">Gráficos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="page-hero">
+      <p class="kicker">Desenho e dados</p>
+      <h1>Gráficos</h1>
+      <p class="lead">Um desenho em <code>&lt;canvas&gt;</code> e um ícone em SVG estilizado com CSS.</p>
+    </section>
+
+    <div class="card-grid">
+      <section class="card wide">
+        <h2>Horas semanais por interesse</h2>
+        <canvas id="hobby-chart" width="640" height="320" role="img"
+          aria-label="Gráfico de barras: Linux 7 horas, cibersegurança 9 horas, redes 5 horas, scripting 6 horas, leitura técnica 4 horas"></canvas>
+        <p class="media-caption">grafico das minhas interações semanais</p>
+      </section>
+
+      <section class="card wide">
+        <h2>Emblema de segurança</h2>
+        <div class="svg-wrap">
+          <svg class="botanical" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração de um escudo com um cadeado, representando segurança">
+            <path class="leaf" d="M100 22 L165 48 C165 100, 145 150, 100 178 C55 150, 35 100, 35 48 Z" />
+            <path class="vein" d="M78 96 L78 82 C78 70, 88 62, 100 62 C112 62, 122 70, 122 82 L122 96" />
+            <rect class="vein" x="72" y="96" width="56" height="42" rx="6" />
+            <path class="vein" d="M100 112 L100 124" />
+          </svg>
+        </div>
+        <p class="media-caption">escudo por classes CSS.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 Felipe Gomes</span>
+      <span><a href="mailto:felipe.gomes@exemplo.com">felipe.gomes@exemplo.com</a> · São Paulo, SP</span>
+    </div>
+  </footer>
+
+  <script src="js/nav.js"></script>
+  <script src="js/graficos.js"></script>
+</body>
+</html>
