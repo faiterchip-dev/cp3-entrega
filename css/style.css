@@ -1,0 +1,589 @@
+/* =========================================================
+   Felipe Gomes — site pessoal (CP2: responsivo, mobile-first)
+   Paleta: azul escuro + ocre queimado sobre papel acinzentado
+   Tipografia: Fraunces (títulos) + Work Sans (texto)
+
+   Estratégia: os estilos base abaixo valem para celulares.
+   Telas maiores recebem ajustes via @media (min-width: ...):
+     - 640px  -> tablets / celulares na horizontal
+     - 960px  -> desktops
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --paper: #e4e7ea;
+  --paper-warm: #eef1f3;
+  --ink: #193047;
+  --ink-soft: #4c5866;
+  --accent: #1c3f5f;
+  --accent-deep: #12283d;
+  --ochre: #b5722f;
+  --card: #fbfbfa;
+  --line: #c3cdd4;
+  --line-strong: #8fa0ab;
+  --radius: 6px;
+  --measure: 68ch;
+  --page-width: 1080px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+/* ---------- Imagens e mídias responsivas ---------- */
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  height: auto;
+}
+
+img,
+video { display: block; }
+
+a { color: var(--accent-deep); }
+a:hover { color: var(--ochre); }
+
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-top: 0;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.4rem; margin-bottom: 0.6em; }
+h3 { font-size: 1.1rem; margin-bottom: 0.4em; }
+
+p { max-width: var(--measure); }
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6em 1em;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* ---------- Cabeçalho / menu (Flexbox) ---------- */
+.site-header {
+  border-bottom: 2px solid var(--accent);
+  background: var(--paper-warm);
+}
+
+/* Mobile: logo em cima, menu embaixo */
+.header-inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.wordmark {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--accent-deep);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.wordmark:hover { color: var(--ochre); }
+.wordmark span { color: var(--ochre); font-style: normal; }
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.main-nav a:hover {
+  border-color: var(--line-strong);
+  color: var(--accent-deep);
+}
+
+.main-nav a[aria-current="page"] {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ---------- Layout base ---------- */
+main {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0.5rem 1rem 3rem;
+}
+
+.page-hero {
+  padding: 1.6rem 0 0.3rem;
+}
+
+.page-hero--flush { padding-bottom: 0; }
+
+.kicker {
+  color: var(--ochre);
+  font-size: 0.95rem;
+  margin: 0 0 0.3rem;
+}
+
+.lead {
+  color: var(--ink-soft);
+  margin-top: 0.4rem;
+}
+
+/* ---------- Grid de cards ---------- */
+/* Mobile: 1 coluna */
+.card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  margin: 1.4rem 0;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+}
+
+.card h2, .card h3 { margin-top: 0; }
+
+.card.wide { grid-column: 1 / -1; }
+
+.card-solo {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  margin: 1.4rem 0;
+}
+
+.form-card { max-width: 640px; }
+
+/* ---------- Identidade (index) — Flexbox ---------- */
+.identity-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--paper-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  border: 3px solid var(--card);
+  outline: 1px solid var(--line-strong);
+  flex-shrink: 0;
+}
+
+.tag-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0.8rem 0 0;
+}
+
+.tag-list li {
+  border: 1px solid var(--line-strong);
+  color: var(--accent-deep);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  background: var(--paper-warm);
+}
+
+/* ---------- Listas ---------- */
+.plain-list {
+  padding-left: 1.2rem;
+  margin: 0.6rem 0 0;
+}
+.plain-list li { margin-bottom: 0.9rem; }
+.plain-list li:last-child { margin-bottom: 0; }
+
+.entry-title {
+  font-weight: 600;
+  color: var(--ink);
+}
+.entry-meta {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-top: 0.15rem;
+}
+
+/* ---------- Tabela ---------- */
+/* Em telas estreitas a tabela rola na horizontal dentro do card */
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+}
+
+caption {
+  text-align: left;
+  color: var(--ink-soft);
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+thead th {
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+tbody tr:hover { background: var(--paper-warm); }
+
+/* ---------- Formulário ---------- */
+fieldset {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin: 0 0 1.4rem;
+}
+
+legend {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  padding: 0 0.5rem;
+  color: var(--accent-deep);
+}
+
+.field { margin-bottom: 1.15rem; }
+
+.field label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.field-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+/* Grid do formulário: 1 coluna no mobile, 2 colunas em telas maiores */
+.field-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 1.2rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+}
+
+input:focus, select:focus, textarea:focus, a:focus, button:focus {
+  outline: 2px solid var(--ochre);
+  outline-offset: 2px;
+}
+
+textarea { resize: vertical; min-height: 120px; }
+
+.radio-row, .checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  font-weight: 400;
+}
+.radio-row input, .checkbox-row input { margin-top: 0.3rem; }
+.radio-row label, .checkbox-row label { display: inline; font-weight: 400; margin: 0; }
+
+.btn {
+  display: block;
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn:hover { background: var(--accent-deep); }
+
+.form-status {
+  margin-top: 1.1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  background: var(--paper-warm);
+  color: var(--accent-deep);
+  display: none;
+}
+.form-status.visible { display: block; }
+
+/* ---------- Multimídia ---------- */
+.media-frame {
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.media-frame--audio { padding: 1rem; }
+
+video,
+iframe.map-frame {
+  width: 100%;
+  display: block;
+  border: none;
+}
+
+iframe.map-frame { height: 260px; }
+
+audio { width: 100%; }
+
+.media-caption {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-top: 0.6rem;
+}
+
+/* ---------- Gráficos ---------- */
+canvas {
+  display: block;
+  width: 100%;
+  background: var(--paper-warm);
+  border-radius: var(--radius);
+}
+
+.svg-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.botanical {
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+}
+
+.leaf {
+  fill: var(--paper-warm);
+  stroke: var(--accent);
+  stroke-width: 2;
+  transition: fill 0.25s ease, transform 0.25s ease;
+  transform-origin: center;
+}
+.botanical:hover .leaf {
+  fill: var(--accent);
+  transform: scale(1.04) rotate(-2deg);
+}
+.vein { stroke: var(--ochre); stroke-width: 1.4; fill: none; opacity: 0.85; }
+
+/* ---------- Rodapé (Flexbox) ---------- */
+.site-footer {
+  border-top: 1px solid var(--line-strong);
+  background: var(--paper-warm);
+  margin-top: 2rem;
+}
+
+.footer-inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 1.4rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.footer-inner a { color: var(--ink-soft); }
+.footer-inner a:hover { color: var(--ochre); }
+
+/* =========================================================
+   Telas médias (>= 640px): tablets e celulares deitados
+   ========================================================= */
+@media (min-width: 640px) {
+  body { font-size: 1.0625rem; }
+
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.7rem; }
+  h3 { font-size: 1.15rem; }
+
+  /* Cabeçalho em linha: logo à esquerda, menu à direita */
+  .header-inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.3rem 1.5rem;
+    gap: 0.8rem 1.5rem;
+  }
+
+  .wordmark { font-size: 1.5rem; }
+
+  .main-nav a {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.97rem;
+  }
+
+  main { padding: 1rem 1.5rem 4rem; }
+
+  .page-hero { padding-top: 2.4rem; }
+
+  /* Grid em 2 colunas */
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem;
+    margin: 1.8rem 0;
+  }
+
+  .card,
+  .card-solo { padding: 1.6rem 1.7rem; }
+
+  .card-solo { margin: 1.8rem 0; }
+
+  /* Identidade em linha */
+  .identity-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .avatar {
+    width: 132px;
+    height: 132px;
+    font-size: 2.6rem;
+  }
+
+  table { font-size: 0.96rem; }
+  th, td { padding: 0.65rem 0.7rem; }
+
+  fieldset { padding: 1.4rem 1.5rem 1.6rem; }
+
+  .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .btn {
+    display: inline-block;
+    width: auto;
+  }
+
+  iframe.map-frame { height: 340px; }
+
+  .botanical { max-width: 200px; }
+
+  .site-footer { margin-top: 3rem; }
+
+  .footer-inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 1.8rem 1.5rem;
+  }
+}
+
+/* =========================================================
+   Telas grandes (>= 960px): desktops
+   ========================================================= */
+@media (min-width: 960px) {
+  h1 { font-size: 3rem; }
+  h2 { font-size: 1.9rem; }
+
+  .page-hero { padding-top: 2.8rem; }
+
+  .card-grid { gap: 1.8rem; }
+
+  iframe.map-frame { height: 420px; }
+
+  .botanical { max-width: 220px; }
+}
+
+/* ---------- Acessibilidade: menos movimento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
