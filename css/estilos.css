@@ -27,6 +27,7 @@
   --page-width: 1080px;
   --accent-hover: #12283d;
   --field-bg: #ffffff;
+  --danger: #b3261e;
 }
 
 /* ---------- Tema escuro: só troca os valores das variáveis ---------- */
@@ -43,6 +44,7 @@
   --line: #2d4359;
   --line-strong: #5d778e;
   --field-bg: #0e1a26;
+  --danger: #ff8a80;
 }
 
 * { box-sizing: border-box; }
@@ -635,4 +637,25 @@ canvas {
     padding: 0.4rem 0.85rem;
     font-size: 0.97rem;
   }
+}
+
+/* ---------- Validação do formulário ---------- */
+.field-error {
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin: 0.35rem 0 0;
+}
+
+.field-error:empty { display: none; }
+
+input.is-invalid,
+select.is-invalid,
+textarea.is-invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 1px var(--danger);
+}
+
+.form-status.error {
+  border-color: var(--danger);
+  color: var(--danger);
 }

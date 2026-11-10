@@ -40,18 +40,21 @@
 
           <div class="field">
             <label for="nome">Nome completo</label>
-            <input type="text" id="nome" name="nome" required autocomplete="name">
+            <input type="text" id="nome" name="nome" required autocomplete="name" aria-describedby="erro-nome">
+            <p class="field-error" id="erro-nome"></p>
           </div>
 
           <div class="field-grid">
             <div class="field">
               <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" required autocomplete="email">
+              <input type="email" id="email" name="email" required autocomplete="email" aria-describedby="erro-email">
+              <p class="field-error" id="erro-email"></p>
             </div>
 
             <div class="field">
               <label for="telefone">Telefone <span class="optional">(opcional)</span></label>
-              <input type="tel" id="telefone" name="telefone" autocomplete="tel" placeholder="(11) 99999-0000">
+              <input type="tel" id="telefone" name="telefone" autocomplete="tel" placeholder="(11) 99999-0000" aria-describedby="erro-telefone">
+              <p class="field-error" id="erro-telefone"></p>
             </div>
           </div>
         </fieldset>
@@ -61,19 +64,21 @@
 
           <div class="field">
             <label for="assunto">Assunto</label>
-            <select id="assunto" name="assunto" required>
+            <select id="assunto" name="assunto" required aria-describedby="erro-assunto">
               <option value="">Selecione uma opção</option>
               <option value="orcamento">Proposta de colaboração</option>
               <option value="colaboracao">Apenas dizer olá</option>
               <option value="consultoria">Dúvidas sobre TI e segurança</option>
               <option value="outro">Outro assunto</option>
             </select>
+            <p class="field-error" id="erro-assunto"></p>
           </div>
 
           <div class="field">
             <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" name="mensagem" required minlength="10"
+            <textarea id="mensagem" name="mensagem" required minlength="10" aria-describedby="erro-mensagem"
               placeholder="Conte um pouco sobre o que você tem em mente..."></textarea>
+            <p class="field-error" id="erro-mensagem"></p>
           </div>
 
           <div class="field">

@@ -76,25 +76,95 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/* ---------- Formulário de contato ---------- */
-// Envio simulado do formulário de contato (sem backend nesta demonstração)
+/* ---------- Formulário de contato: validação, feedback e histórico ---------- */
 document.addEventListener('DOMContentLoaded', function () {
   var form = document.getElementById('contact-form');
-  var status = document.getElementById('form-status');
   if (!form) return;
 
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
+  var status = document.getElementById('form-status');
+  var campos = ['nome', 'email', 'telefone', 'assunto', 'mensagem'];
 
-    if (!form.checkValidity()) {
-      form.reportValidity();
+  // Cada regra recebe o valor (sem espaços nas pontas) e devolve a mensagem de
+  // erro, ou '' quando o campo está válido.
+  var regras = {
+    nome: function (v) {
+      if (!v) return 'Informe seu nome completo.';
+      if (v.length < 3) return 'O nome precisa ter pelo menos 3 caracteres.';
+      if (v.split(/\s+/).length < 2) return 'Digite nome e sobrenome.';
+      return '';
+    },
+    email: function (v) {
+      if (!v) return 'Informe seu e-mail.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Digite um e-mail válido, como nome@exemplo.com.';
+      return '';
+    },
+    telefone: function (v) {
+      if (!v) return ''; // campo opcional
+      var digitos = v.replace(/\D/g, '');
+      if (digitos.length < 10 || digitos.length > 11) return 'Use DDD + número, com 10 ou 11 dígitos.';
+      return '';
+    },
+    assunto: function (v) {
+      return v ? '' : 'Escolha um assunto.';
+    },
+    mensagem: function (v) {
+      if (!v) return 'Escreva sua mensagem.';
+      if (v.length < 10) return 'A mensagem precisa ter pelo menos 10 caracteres.';
+      return '';
+    }
+  };
+
+  function mostrarErro(id, mensagem) {
+    var campo = document.getElementById(id);
+    document.getElementById('erro-' + id).textContent = mensagem;
+    campo.classList.toggle('is-invalid', mensagem !== '');
+    if (mensagem) {
+      campo.setAttribute('aria-invalid', 'true');
+    } else {
+      campo.removeAttribute('aria-invalid');
+    }
+  }
+
+  function validarCampo(id) {
+    var mensagem = regras[id](document.getElementById(id).value.trim());
+    mostrarErro(id, mensagem);
+    return mensagem === '';
+  }
+
+  function mostrarStatus(tipo, texto) {
+    status.textContent = texto;
+    status.className = 'form-status visible ' + tipo;
+  }
+
+  // Valida ao sair do campo e, depois do primeiro erro, a cada digitação
+  campos.forEach(function (id) {
+    var campo = document.getElementById(id);
+    campo.addEventListener('blur', function () { validarCampo(id); });
+    campo.addEventListener('input', function () {
+      if (campo.classList.contains('is-invalid')) validarCampo(id);
+    });
+  });
+
+
+  form.addEventListener('submit', function (evento) {
+    evento.preventDefault();
+
+    var invalidos = campos.filter(function (id) { return !validarCampo(id); });
+    if (invalidos.length > 0) {
+      mostrarStatus('error', invalidos.length === 1
+        ? 'Há 1 campo para corrigir antes de enviar.'
+        : 'Há ' + invalidos.length + ' campos para corrigir antes de enviar.');
+      document.getElementById(invalidos[0]).focus();
       return;
     }
 
     var nome = document.getElementById('nome').value.trim();
-    status.textContent = 'Obrigado, ' + nome + '! Sua mensagem foi registrada nesta demonstração — em um site real, ela seria enviada por e-mail ou salva em um servidor.';
-    status.classList.add('visible');
+    var texto = 'Obrigado, ' + nome + '! Sua mensagem foi validada. Como o site não tem servidor, ela não é enviada a ninguém.';
+
+
     form.reset();
+    campos.forEach(function (id) { mostrarErro(id, ''); });
+    mostrarStatus('success', texto);
     status.focus();
   });
 });
