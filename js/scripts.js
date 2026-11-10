@@ -1,12 +1,70 @@
 /* =========================================================
    Felipe Gomes — site pessoal
    Todo o JavaScript do site em um único arquivo.
-   Seções: 1) menu ativo  2) formulário de contato  3) gráfico
+   Recursos com localStorage: tema claro/escuro e mensagens do formulário.
    ========================================================= */
 (function () {
   'use strict';
 
-/* ---------- 1) Menu: marca a página atual ---------- */
+/* ---------- Utilitários de localStorage ---------- */
+// Todo acesso ao localStorage passa por aqui, com try/catch: em modo anônimo
+// restrito ou com o armazenamento bloqueado, o site continua funcionando.
+function lerStorage(chave, padrao) {
+  try {
+    var bruto = window.localStorage.getItem(chave);
+    return bruto === null ? padrao : JSON.parse(bruto);
+  } catch (erro) {
+    return padrao;
+  }
+}
+
+function salvarStorage(chave, valor) {
+  try {
+    window.localStorage.setItem(chave, JSON.stringify(valor));
+    return true;
+  } catch (erro) {
+    return false;
+  }
+}
+
+/* ---------- Tema claro/escuro (salvo no localStorage) ---------- */
+var CHAVE_TEMA = 'fg_tema';
+
+function temaInicial() {
+  var salvo = lerStorage(CHAVE_TEMA, null);
+  if (salvo === 'dark' || salvo === 'light') return salvo;
+  // Sem preferência salva: segue a configuração do sistema
+  var escuroNoSistema = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return escuroNoSistema ? 'dark' : 'light';
+}
+
+function temaAtual() {
+  return document.documentElement.getAttribute('data-theme') || 'light';
+}
+
+// Roda já no <head>, antes de a página aparecer, para não "piscar" o tema errado
+document.documentElement.setAttribute('data-theme', temaInicial());
+
+document.addEventListener('DOMContentLoaded', function () {
+  var botao = document.getElementById('theme-toggle');
+  if (!botao) return;
+
+  function atualizarBotao() {
+    botao.setAttribute('aria-pressed', String(temaAtual() === 'dark'));
+  }
+  atualizarBotao();
+
+  botao.addEventListener('click', function () {
+    var novo = temaAtual() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', novo);
+    salvarStorage(CHAVE_TEMA, novo);
+    atualizarBotao();
+    // Avisa o resto do site (o gráfico em canvas precisa redesenhar com as novas cores)
+    document.dispatchEvent(new CustomEvent('temamudou'));
+  });
+});
+
+/* ---------- Menu: marca a página atual ---------- */
 // Marca o item de menu correspondente à página atual
 document.addEventListener('DOMContentLoaded', function () {
   var current = window.location.pathname.split('/').pop() || 'index.html';
@@ -18,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/* ---------- 2) Formulário de contato ---------- */
+/* ---------- Formulário de contato ---------- */
 // Envio simulado do formulário de contato (sem backend nesta demonstração)
 document.addEventListener('DOMContentLoaded', function () {
   var form = document.getElementById('contact-form');
@@ -41,11 +99,10 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/* ---------- 3) Gráfico de barras em canvas ---------- */
-// Desenha, em <canvas>, um gráfico de barras simples com horas semanais
-// dedicadas a cada área de estudo/interesse técnico.
-// CP2: o gráfico se adapta à largura disponível e é redesenhado quando a
-// janela muda de tamanho (girar o celular, redimensionar o navegador).
+/* ---------- Gráfico de barras em canvas ---------- */
+// Horas semanais dedicadas a cada área de estudo/interesse técnico.
+// Adapta-se à largura disponível, redesenha ao redimensionar a janela e
+// usa as cores do tema atual (claro ou escuro).
 document.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById('hobby-chart');
   if (!canvas || !canvas.getContext) return;
@@ -60,12 +117,17 @@ document.addEventListener('DOMContentLoaded', function () {
     { label: 'Leitura téc.', curto: 'Leitura', horas: 4 }
   ];
 
-  var ink = '#4c5866';
-  var accent = '#1c3f5f';
-  var ochre = '#b5722f';
-  var line = '#c3cdd4';
+  // Lê uma variável de cor do CSS (muda conforme o tema)
+  function cor(nome) {
+    return window.getComputedStyle(document.documentElement).getPropertyValue(nome).trim();
+  }
 
   function draw() {
+    var ink = cor('--ink-soft');
+    var accent = cor('--accent');
+    var ochre = cor('--ochre');
+    var line = cor('--line');
+
     // Largura real exibida (o CSS faz o canvas ocupar 100% do card)
     var displayWidth = canvas.clientWidth || 640;
     var displayHeight = displayWidth < 420 ? 260 : 320;
@@ -140,6 +202,9 @@ document.addEventListener('DOMContentLoaded', function () {
     clearTimeout(timer);
     timer = setTimeout(draw, 120);
   });
+
+  // Redesenha quando o tema claro/escuro muda
+  document.addEventListener('temamudou', draw);
 });
 
 })();
