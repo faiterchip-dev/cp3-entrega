@@ -303,7 +303,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var padding = { top: 24, right: small ? 10 : 20, bottom: 40, left: small ? 34 : 40 };
     var chartWidth = displayWidth - padding.left - padding.right;
     var chartHeight = displayHeight - padding.top - padding.bottom;
-    var maxValue = Math.max.apply(null, data.map(function (d) { return d.horas; })) + 2;
+    // Escala arredondada para cima, de modo que as linhas guia fiquem igualmente espaçadas
+    var steps = 4;
+    var maxValue = Math.ceil((Math.max.apply(null, data.map(function (d) { return d.horas; })) + 1) / steps) * steps;
     var barGap = small ? 10 : Math.min(28, Math.round(chartWidth * 0.04));
     var barWidth = (chartWidth - barGap * (data.length - 1)) / data.length;
 
@@ -315,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ctx.font = (small ? '11px' : '12px') + ' "Work Sans", sans-serif';
     ctx.fillStyle = ink;
     ctx.textAlign = 'start';
-    var steps = 4;
     for (var s = 0; s <= steps; s++) {
       var value = Math.round((maxValue / steps) * s);
       var y = padding.top + chartHeight - (value / maxValue) * chartHeight;
